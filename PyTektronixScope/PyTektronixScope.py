@@ -78,7 +78,7 @@ class TektronixScope(visa.Instrument):
         dico = dict([e.split(' ') for e in l.split(';')[1:]])
         self.dico = dico
 
-    def get_setup(self, name, force_load=False):
+    def get_setup_dict(self, force_load=False):
         """Return the dictionnary of the setup 
         
         By default, the method does not load the setup from the instrument
@@ -86,11 +86,21 @@ class TektronixScope(visa.Instrument):
         """
         if not hasattr(self, 'dico') or force_load:
             self.load_setup()
-        return dico[name]
+        return self.dico
+
+    def get_setup(self, name, force_load=False):
+        """Return the setup named 'name' 
+        
+        By default, the method does not load the setup from the instrument
+        unless it has not been loaded before or force_load is set to true.
+        """
+        if not hasattr(self, 'dico') or force_load:
+            self.load_setup()
+        return self.dico[name]
 
     def number_of_channel(self):
         """Return the number of available channel on the scope (4 or 2)"""
-        if ':CH4:SCA' in self.get_setup():
+        if ':CH4:SCA' in self.get_setup_dict().keys():
             return 4
         else:
             return 2
