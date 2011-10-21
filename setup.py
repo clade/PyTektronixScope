@@ -84,6 +84,7 @@ author.''',
         'Topic :: Software Development',
         'Topic :: Software Development :: Libraries',
         'Topic :: Software Development :: Libraries :: Python Modules'], 
+     requires=['pyvisa'],
      packages=["PyTektronixScope"]
 
 )
@@ -117,6 +118,7 @@ author.''',
         'Topic :: Software Development',
         'Topic :: Software Development :: Libraries',
         'Topic :: Software Development :: Libraries :: Python Modules'], 
+     requires=['pyvisa'],
      packages=["PyTektronixScope"]
 
 )
