@@ -3,6 +3,8 @@
 
 """
 
+import visa
+from pyvisa import vpp43
 
 class VisaObjectList():
     """ Create a list of available VISA objects
@@ -26,7 +28,7 @@ class VisaObjectList():
         resource_ids = []
         for a in range(len(resource_names)):
             interface_type, _ = \
-            vpp43.parse_resource(resource_manager.session, resource_names[a])
+            vpp43.parse_resource(visa.resource_manager.session, resource_names[a])
             if interface_type == visa.VI_INTF_ASRL:
                 resource_ids.append("RS232 not Supported")
             else:
@@ -62,11 +64,11 @@ class VisaObjectList():
                 else:
                     param_type = "resource_id"
         if param_type=='number':
-            return instrument(self.resource_names[name])
+            return visa.instrument(self.resource_names[name])
         elif param_type=='resource_name':
-            return instrument(name)
+            return visa.instrument(name)
         else:
-            return instrument(self.resource_names[self.resource_ids.index(name)])
+            return visa.instrument(self.resource_names[self.resource_ids.index(name)])
     def __repr__(self):
         return '\n'.join(["%i : %s : %s"%(i, self.resource_names[i], 
                                           self.resource_ids[i])
