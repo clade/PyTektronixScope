@@ -1,0 +1,1 @@
+from PyTektronixScope import *

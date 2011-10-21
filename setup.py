@@ -1,0 +1,110 @@
+# -*- coding: utf-8 -*-
+import sys
+
+#from distutils.core import setup
+from setuptools import setup
+
+      long_description='''\
+Overview
+========
+
+This package can be used to record data from a Tektronik scope. 
+
+
+Installation
+============
+
+You need first to install the pyvisa package. 
+To install PyTektronikScope, download the package and run the command:: 
+
+  python setup.py install
+
+You can also directly move the PyTektronikScope directory to a location
+that Python can import from (directory in which scripts 
+using PyDAQmx are run, etc.)
+
+Sources can also be download on the `PyTektronikScope github repository`. 
+
+Contact
+=======
+
+Please send bug reports or feedback to `Pierre Cladé`_.
+
+Version history
+===============
+Main changes:
+
+* 0.1 Initial relase
+
+
+.. _Pierre Clade: mailto:pierre.clade@spectro.jussieu.fr
+.. _PyTektronikScope github repository: https://github.com/clade/PyTektronikScope
+'''
+
+
+# There is a problem with writing unicode to a file on version of python <2.6
+# So I remove the accent of the author name in this case
+# TODO: find an automatic way of removing accent if version<2.6
+if sys.version_info[:2]>=(2,6): # Unicode accent does not work on earlier version
+    setup(name="PyDAQmx", version='1.2.1',
+      author=u'Pierre Cladé', author_email="pierre.clade@spectro.jussieu.fr",
+      maintainer=u'Pierre Cladé',
+      maintainer_email="pierre.clade@spectro.jussieu.fr",
+      license='''\
+This software can be used under one of the following two licenses: \
+(1) The BSD license. \
+(2) Any other license, as long as it is obtained from the original \
+author.''',
+
+      description='Interface to Tektronik Scope',
+      long_description = long_description,  
+      keywords=['Tektronik', 'scope', 'Data Acquisition'],
+      classifiers=[
+        'Development Status :: 4 - Beta',
+        'Intended Audience :: Developers',
+        'Intended Audience :: Education',
+        'Intended Audience :: Other Audience',
+        'Intended Audience :: Science/Research',
+        'License :: OSI Approved :: BSD License',
+        'Programming Language :: Python',
+        'Topic :: Scientific/Engineering',
+        'Topic :: Scientific/Engineering :: Physics',
+        'Topic :: Software Development',
+        'Topic :: Software Development :: Libraries',
+        'Topic :: Software Development :: Libraries :: Python Modules'], 
+     packages=["PyTektronikScope"]
+
+)
+else: # version of python <2.6. Remove the unicode  
+      setup(name="PyDAQmx", version='1.2.1',
+      author='Pierre Clade', author_email="pierre.clade@spectro.jussieu.fr",
+      maintainer='Pierre Clade',
+      maintainer_email="pierre.clade@spectro.jussieu.fr",
+      url='http://packages.python.org/PyDAQmx/',
+      license='''\
+This software can be used under one of the following two licenses: \
+(1) The BSD license. \
+(2) Any other license, as long as it is obtained from the original \
+author.''',
+
+      description='Interface to the National Instrument PyDAQmx driver',
+
+      long_description = long_description,
+
+      keywords=['Tektronik', 'scope', 'Data Acquisition'],
+      classifiers=[
+        'Development Status :: 4 - Beta',
+        'Intended Audience :: Developers',
+        'Intended Audience :: Education',
+        'Intended Audience :: Other Audience',
+        'Intended Audience :: Science/Research',
+        'License :: OSI Approved :: BSD License',
+        'Programming Language :: Python',
+        'Topic :: Scientific/Engineering',
+        'Topic :: Scientific/Engineering :: Physics',
+        'Topic :: Software Development',
+        'Topic :: Software Development :: Libraries',
+        'Topic :: Software Development :: Libraries :: Python Modules'], 
+     packages=["PyTektronikScope"]
+
+)
