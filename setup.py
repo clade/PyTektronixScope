@@ -8,22 +8,34 @@ from setuptools import setup
 Overview
 ========
 
-This package can be used to record data from a Tektronik scope. 
+This package can be used to record data from a Tektronix scope. 
 
 
 Installation
 ============
 
 You need first to install the pyvisa package. 
-To install PyTektronikScope, download the package and run the command:: 
+To install PyTektronixScope, download the package and run the command:: 
 
   python setup.py install
 
-You can also directly move the PyTektronikScope directory to a location
+You can also directly move the PyTektronixScope directory to a location
 that Python can import from (directory in which scripts 
 using PyDAQmx are run, etc.)
 
-Sources can also be download on the `PyTektronikScope github repository`. 
+Sources can also be download on the `PyTektronixScope github repository`. 
+
+Usage
+=====
+
+  from PyTektronixScope import PyTektronixScope
+  from PyTektronixScope.VisaList import from PyTektronixScope
+
+  # List all the available Visa instrument
+  print VisaObjectList()
+
+  scope = TektronixScope(instrument_resource_name)
+  X,Y = scope.read_data_one_channel('CH2', t0 = 0, DeltaT = 1E-6, x_axis_out=True)
 
 Contact
 =======
@@ -38,7 +50,7 @@ Main changes:
 
 
 .. _Pierre Clade: mailto:pierre.clade@spectro.jussieu.fr
-.. _PyTektronikScope github repository: https://github.com/clade/PyTektronikScope
+.. _PyTektronixScope github repository: https://github.com/clade/PyTektronixScope
 '''
 
 
@@ -56,9 +68,9 @@ This software can be used under one of the following two licenses: \
 (2) Any other license, as long as it is obtained from the original \
 author.''',
 
-      description='Interface to Tektronik Scope',
+      description='Interface to Tektronix Scope',
       long_description = long_description,  
-      keywords=['Tektronik', 'scope', 'Data Acquisition'],
+      keywords=['Tektronix', 'scope', 'Data Acquisition'],
       classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
@@ -72,7 +84,7 @@ author.''',
         'Topic :: Software Development',
         'Topic :: Software Development :: Libraries',
         'Topic :: Software Development :: Libraries :: Python Modules'], 
-     packages=["PyTektronikScope"]
+     packages=["PyTektronixScope"]
 
 )
 else: # version of python <2.6. Remove the unicode  
@@ -91,7 +103,7 @@ author.''',
 
       long_description = long_description,
 
-      keywords=['Tektronik', 'scope', 'Data Acquisition'],
+      keywords=['Tektronix', 'scope', 'Data Acquisition'],
       classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
@@ -105,6 +117,6 @@ author.''',
         'Topic :: Software Development',
         'Topic :: Software Development :: Libraries',
         'Topic :: Software Development :: Libraries :: Python Modules'], 
-     packages=["PyTektronikScope"]
+     packages=["PyTektronixScope"]
 
 )
