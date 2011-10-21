@@ -14,7 +14,7 @@ This package can be used to record data from a Tektronix scope.
 Installation
 ============
 
-You need first to install the pyvisa package. 
+You need first to install the `PyVISA`_ package. 
 To install PyTektronixScope, download the package and run the command:: 
 
   python setup.py install
@@ -23,7 +23,7 @@ You can also directly move the PyTektronixScope directory to a location
 that Python can import from (directory in which scripts 
 using PyDAQmx are run, etc.)
 
-Sources can also be download on the `PyTektronixScope github repository`. 
+Sources can also be download on the `PyTektronixScope github repository`_. 
 
 Usage
 =====
@@ -53,6 +53,7 @@ Main changes:
 
 .. _Pierre Clade: mailto:pierre.clade@spectro.jussieu.fr
 .. _PyTektronixScope github repository: https://github.com/clade/PyTektronixScope
+.. _PyVISA: http://pyvisa.sourceforge.net/
 '''
 
 
