@@ -28,8 +28,10 @@ Sources can also be download on the `PyTektronixScope github repository`.
 Usage
 =====
 
+Typical usage::
+
   from PyTektronixScope import PyTektronixScope
-  from PyTektronixScope.VisaList import from PyTektronixScope
+  from PyTektronixScope.VisaList import VisaObjectList
 
   # List all the available Visa instrument
   print VisaObjectList()
