@@ -40,7 +40,7 @@ Usage
 Contact
 =======
 
-Please send bug reports or feedback to `Pierre Cladé`_.
+Please send bug reports or feedback to `Pierre Clade`_.
 
 Version history
 ===============
