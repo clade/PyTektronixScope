@@ -1,9 +1,11 @@
-import visa
-from pyvisa import vpp43
 from time import *
-from struct import unpack
 import numbers
 import numpy as np
+
+try:
+    import visa
+except ImportError:
+    visa = None
 
 class TektronixScopeError(Exception):
     """Exception raised from the TektronixScope class
@@ -18,7 +20,9 @@ class TektronixScopeError(Exception):
     def __str__(self):
         return self.mesg
 
-class TektronixScope(visa.Instrument):
+
+
+class TektronixScope(object):
     """Drive a TektronixScope instrument
 
     usage:
@@ -30,12 +34,36 @@ class TektronixScope(visa.Instrument):
     be configured manually. Direct acces to the instrument can
     be made as any Visa Instrument :  scope.ask('*IDN?')
     """    
-    def __init__(self, name):
-        if isinstance(name,  visa.Instrument):
-            resource_name = name.resource_name
-            visa.Instrument.__init__(self, resource_name)
-        else:  
-            visa.Instrument.__init__(self, name)
+    def __init__(self, inst):
+        """ Initialise the Scope
+
+        argument : 
+            inst : should be a string or an object with write and ask method
+
+        """
+        if not hasattr(inst, 'write'): 
+            if isinstance(inst, str):
+                if visa is not None:
+                    rm = visa.ResourceManager()
+                    inst = rm.open_resource(inst)
+                else:
+                    raise Exception('Visa is not install on your system')
+            else:
+                raise ValueError('First argument should be a string or an instrument')
+        self._inst = inst
+
+    def write(self, cmd):
+        return self._inst.write(cmd)
+
+    def ask(self, cmd):
+        return self._inst.ask(cmd)
+
+    def ask_raw(self, cmd):
+        if hasattr(self._inst, 'ask_raw'):
+            return self._inst.ask_raw(cmd)[:-1]
+        else:
+            return self._inst.ask(cmd)
+
 
 ###################################
 ## Method ordered by groups 
@@ -65,6 +93,12 @@ class TektronixScope(visa.Instrument):
 #Hard Copy Command Group
 
 #Horizontal Command Group
+    def get_horizontal_scale(self):
+        return float(self.ask("HORizontal:SCAle?"))
+
+    def set_horizontal_scale(self, val):
+        return self.write("HORizontal:SCAle {val}".format(val=val))
+
 
 #Mark Command Group
 
@@ -149,6 +183,41 @@ should be in %s"%(str(name), ' '.join(channel_list)))
 
     def get_out_waveform_vertical_scale_factor(self):
         return float(self.ask('%s:SCA?'%self.channel_name(channel)))
+
+
+    def set_impedance(self, channel, value):
+        """Sets the input impedance of the channel"""
+        liste_string = ['FIF', 'FIFty','SEVENTYF','SEVENTYFive','MEG','50','75','1.00E+06']
+        liste_value = [50, 75, 1.00E6]
+        if isinstance(value, str) or isinstance(value, unicode):
+            if value.lower() not in map(lambda a:a.lower(),liste_string):
+                raise TektronixScopeError("Impedance is %s. It should be in %s"%liste_string)
+        elif isinstance(value, numbers.Number):
+            if value not in liste_value:
+                raise TektronixScopeError("Impedance is %s. It should be in %s"%liste_value)
+            else:
+                value = str(value) if value<100 else '1.00E+06'
+        else:
+            raise TektronixScopeError("Impedance is %s. It should be in %s"%liste_string)
+        self.write("%s:IMPedance %s"%(self.channel_name(channel), value))
+    def get_impedance(self, channel):
+        """Returns the input impedance of the channel"""
+        return self.ask('%s:IMPedance?'%self.channel_name(channel))
+
+    def set_coupling(self, channel, value):
+        """Sets the input coupling of the channel"""
+        liste_string = ['AC','DC','GND']
+        if isinstance(value, str) or isinstance(value, unicode):
+            if value.lower() not in map(lambda a:a.lower(),liste_string):
+                raise TektronixScopeError("Coupling is %s. It should be in %s"%liste_string)
+        else:
+            raise TektronixScopeError("Coupling is %s. It should be in %s"%liste_string)
+        self.write("%s:COUPling %s"%(self.channel_name(channel), value))
+    def get_coupling(self, channel):
+        """Returns the input coupling of the channel"""
+        return self.ask('%s:COUPling?'%self.channel_name(channel))
+
+
 
 # Waveform Transfer Command Group
     def set_data_source(self, name):
@@ -261,7 +330,7 @@ is not selectecd"%(str(name)))
 
         X_axis = self.x_0 + np.arange(self.data_start-1, self.data_stop)*self.delta_x
 
-        buffer = self.ask('CURVE?')
+        buffer = self.ask_raw('CURVE?')
         res = np.frombuffer(buffer, dtype = np.dtype('int16').newbyteorder('>'),
                             offset=int(buffer[1])+2)
         # The output of CURVE? is scaled to the display of the scope
