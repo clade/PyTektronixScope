@@ -1,0 +1,12 @@
+# Ignore everything
+*
+
+# But not these files...
+!.gitignore
+!README
+!setup.py
+!PyTektronixScope/__init__.py
+!PyTektronixScope/PyTektronixScope.py
+# etc...
+
+
