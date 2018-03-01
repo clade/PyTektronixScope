@@ -181,7 +181,7 @@ should be in %s"%(str(name), ' '.join(channel_list)))
     def get_channel_position(self, channel):
         return float(self.ask('%s:POS?'%self.channel_name(channel)))
 
-    def get_out_waveform_vertical_scale_factor(self):
+    def get_vertical_scale(self, channel):
         return float(self.ask('%s:SCA?'%self.channel_name(channel)))
 
 
@@ -319,7 +319,7 @@ t0, DeltaT and data_start, data_stop args are mutually exculsive")
         if not booster:
             if not self.is_channel_selected(channel):
                 raise TektronixScopeError("Try to read channel %s which \
-is not selectecd"%(str(name)))
+is not selectecd"%(str(channel)))
         if not booster:
             self.write("DATA:ENCDG RIB")
             self.write("WFMO:BYTE_NR 2")
