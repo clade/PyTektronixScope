@@ -109,7 +109,7 @@ class TektronixScope(object):
 #Miscellaneous Command Group
     def load_setup(self):
         l = self.ask('SET?')
-        dico = dict([e.split(' ') for e in l.split(';')[1:]])
+        dico = dict([e.split(' ', 1) for e in l.split(';')[1:]])
         self.dico = dico
 
     def get_setup_dict(self, force_load=False):
