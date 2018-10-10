@@ -20,7 +20,7 @@ Usage
 
 Typical usage::
 
-  from PyTektronixScope import PyTektronixScope
+  from PyTektronixScope import TektronixScope
 
   scope = TektronixScope(instrument_resource_name)
   X,Y = scope.read_data_one_channel('CH2', t0 = 0, DeltaT = 1E-6, x_axis_out=True)
