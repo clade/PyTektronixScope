@@ -1,1 +1,1 @@
-from PyTektronixScope import *
+from .PyTektronixScope import TektronixScope
