@@ -46,6 +46,7 @@ Main changes:
 
 * 0.1 Initial relase
 * 0.2 Update to new version of visa
+* 0.2.1 Misc. bugs
 
 .. _Pierre Clade: mailto:pierre.clade@spectro.jussieu.fr
 .. _PyTektronixScope github repository: https://github.com/clade/PyTektronixScope
@@ -57,7 +58,7 @@ Main changes:
 # So I remove the accent of the author name in this case
 # TODO: find an automatic way of removing accent if version<2.6
 if sys.version_info[:2]>=(2,6): # Unicode accent does not work on earlier version
-    setup(name="PyTektronixScope", version='0.2',
+    setup(name="PyTektronixScope", version='0.2.1',
       author=u'Pierre Cladé', author_email="pierre.clade@spectro.jussieu.fr",
       maintainer=u'Pierre Cladé',
       maintainer_email="pierre.clade@spectro.jussieu.fr",
@@ -89,7 +90,7 @@ author.''',
 
 )
 else: # version of python <2.6. Remove the unicode  
-      setup(name="PyTektronixScope", version='0.2',
+      setup(name="PyTektronixScope", version='0.2.1',
       author='Pierre Clade', author_email="pierre.clade@spectro.jussieu.fr",
       maintainer='Pierre Clade',
       maintainer_email="pierre.clade@spectro.jussieu.fr",
