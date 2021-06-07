@@ -3,9 +3,16 @@ import numbers
 import numpy as np
 
 try:
-    import visa
+    import pyvisa
 except ImportError:
-    visa = None
+    pyvisa = None
+
+if pyvisa is None:
+    try:
+        import visa as pyvisa
+    except ImportError:
+        pass
+
 
 class TektronixScopeError(Exception):
     """Exception raised from the TektronixScope class
@@ -43,11 +50,11 @@ class TektronixScope(object):
         """
         if not hasattr(inst, 'write'): 
             if isinstance(inst, str):
-                if visa is not None:
-                    rm = visa.ResourceManager()
+                if pyvisa is not None:
+                    rm = pyvisa.ResourceManager()
                     inst = rm.open_resource(inst)
                 else:
-                    raise Exception('Visa is not install on your system')
+                    raise Exception('pyvisa is not install on your system')
             else:
                 raise ValueError('First argument should be a string or an instrument')
         self._inst = inst
