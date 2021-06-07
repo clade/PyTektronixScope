@@ -134,7 +134,9 @@ class TektronixScope(object):
 
     def number_of_channel(self):
         """Return the number of available channel on the scope (4 or 2)"""
-        if ':CH4:SCA' in self.get_setup_dict().keys():
+        if ':CH8:SCA' in self.get_setup_dict().keys():
+            return 8
+        elif ':CH4:SCA' in self.get_setup_dict().keys():
             return 4
         else:
             return 2
