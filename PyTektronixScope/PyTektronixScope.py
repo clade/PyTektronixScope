@@ -3,9 +3,11 @@ import numbers
 import numpy as np
 
 try:
-    import visa
+    import pyvisa as visa
 except ImportError:
-    visa = None
+    import os
+    os.system('pip install pyvisa')
+    import pyvisa as visa
 
 class TektronixScopeError(Exception):
     """Exception raised from the TektronixScope class
