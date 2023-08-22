@@ -72,9 +72,15 @@ class TektronixScope(object):
             return self._inst.ask(cmd)
 
     def autodetect(self):
+        scopes = ('0x0699::0x0365',  # TDS2004B
+                  '0x0699::0x036A',  # TDS2024B
+                  '0x0699::0x03A3',  # DPO2024B
+                  '0x0699::0x0401')  # DPO4104
         res = self.rm.list_resources()
         try:
-            return [d for d in res if '::0x0699::' in d][0]
+            dev = [d for d in res if d.split('::', 1)[1][:14] in scopes][0]
+            print(dev, 'has been automatically selected.')
+            return dev
         except IndexError:
             raise Exception('No supported scope connected')
 
