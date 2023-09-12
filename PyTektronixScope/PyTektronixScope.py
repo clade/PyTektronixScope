@@ -41,7 +41,7 @@ class TektronixScope(object):
     be configured manually. Direct acces to the instrument can
     be made as any Visa Instrument :  scope.ask('*IDN?')
     """    
-    def __init__(self, inst):
+    def __init__(self, inst=None):
         """ Initialise the Scope
 
         argument : 
@@ -49,21 +49,21 @@ class TektronixScope(object):
 
         """
         if not hasattr(inst, 'write'): 
-            if isinstance(inst, str):
-                if pyvisa is not None:
-                    rm = pyvisa.ResourceManager()
-                    inst = rm.open_resource(inst)
+            if pyvisa is not None:
+                self.rm = pyvisa.ResourceManager()
+                if isinstance(inst, str):
+                    inst = self.rm.open_resource(inst)
                 else:
-                    raise Exception('pyvisa is not install on your system')
+                    inst = self.rm.open_resource(self.autodetect())
             else:
-                raise ValueError('First argument should be a string or an instrument')
+                raise Exception('Pyvisa is not installed on your system')
         self._inst = inst
 
     def write(self, cmd):
         return self._inst.write(cmd)
 
     def ask(self, cmd):
-        return self._inst.ask(cmd)
+        return self._inst.query(cmd)
 
     def ask_raw(self, cmd):
         if hasattr(self._inst, 'ask_raw'):
@@ -71,6 +71,22 @@ class TektronixScope(object):
         else:
             return self._inst.ask(cmd)
 
+    def autodetect(self):
+        scopes = ('0x0699::0x0365',  # TDS2004B
+                  '0x0699::0x036A',  # TDS2024B
+                  '0x0699::0x03A3',  # DPO2024B
+                  '0x0699::0x0401')  # DPO4104
+        res = self.rm.list_resources()
+        try:
+            dev = [d for d in res if d.split('::', 1)[1][:14] in scopes][0]
+            print(dev, 'has been automatically selected.')
+            return dev
+        except IndexError:
+            raise Exception('No supported scope connected')
+
+    def close(self):
+        self._inst.close()
+        self.rm.close()
 
 ###################################
 ## Method ordered by groups 
