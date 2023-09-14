@@ -66,10 +66,11 @@ class TektronixScope(object):
         return self._inst.query(cmd)
 
     def ask_raw(self, cmd):
-        if hasattr(self._inst, 'ask_raw'):
-            return self._inst.ask_raw(cmd)[:-1]
+        if hasattr(self._inst, 'read_raw'):
+            self._inst.write(cmd)
+            return self._inst.read_raw()[:-1]
         else:
-            return self._inst.ask(cmd)
+            return self._inst.query(cmd)
 
     def autodetect(self):
         scopes = ('0x0699::0x0365',  # TDS2004B
@@ -196,7 +197,7 @@ number should be between %i and %i"%(name, 1, n_max))
 should be in %s"%(str(name), ' '.join(channel_list)))
 
     def is_channel_selected(self, channel):
-        return self.ask('SEL:%s?'%(self.channel_name(channel)))=='1'
+        return self.ask('SEL:%s?'%(self.channel_name(channel))).strip()=='1'
 
     def get_channel_offset(self, channel):
         return float(self.ask('%s:OFFS?'%self.channel_name(channel)))
