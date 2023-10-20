@@ -28,12 +28,12 @@ Typical usage when only one supported oscilloscope is connected::
 It might be sensible to explicitly define which oscilloscope your instance of
 TektronixScope should address, e.g. when multiple devices are connected.
 Moreover, this allows using device types for which the automatic detection
-fails - the detection algorithm only covers a small selection[1]_ of
+fails - the detection algorithm only covers a small selection [1]_ of
 all supported Tektronix oscilloscopes. Pass a valid VISA resource name as a
 string to TektronixScope to address this particular resource. More information
 about VISA resource names can be found in the `PyVISA documentation
 <https://pyvisa.readthedocs.io/>`_. You can also pass a PyVISA resource
-instead. Provided that you have a DP2024 (this model has the device id
+instead. Provided that you have a DPO2024 (this model has the device id
 0x0374) with the series number C000683 on USB0, you can use it like this::
 
   from PyTektronixScope import TektronixScope
