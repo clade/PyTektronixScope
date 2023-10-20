@@ -75,6 +75,7 @@ class TektronixScope(object):
     def autodetect(self):
         scopes = ('0x0699::0x0365',  # TDS2004B
                   '0x0699::0x036A',  # TDS2024B
+                  '0x0699::0x0374',  # DPO2024
                   '0x0699::0x03A3',  # DPO2024B
                   '0x0699::0x0401')  # DPO4104
         res = self.rm.list_resources()
@@ -88,6 +89,10 @@ class TektronixScope(object):
     def close(self):
         self._inst.close()
         self.rm.close()
+
+    def set_timeout(self, timeout: float):
+        'Set the timeout in VISA for the device, in milliseconds.'
+        self._inst.timeout = timeout
 
 ###################################
 ## Method ordered by groups 
@@ -346,7 +351,7 @@ t0, DeltaT and data_start, data_stop args are mutually exculsive")
 is not selectecd"%(str(channel)))
         if not booster:
             self.write("DATA:ENCDG RIB")
-            self.write("WFMO:BYTE_NR 2")
+            self.write("WFMO:BYT_NR 2")
             self.offset = self.get_out_waveform_vertical_position()
             self.scale = self.get_out_waveform_vertical_scale_factor()
             self.x_0 = self.get_out_waveform_horizontal_zero()
@@ -355,8 +360,8 @@ is not selectecd"%(str(channel)))
         X_axis = self.x_0 + np.arange(self.data_start-1, self.data_stop)*self.delta_x
 
         buffer = self.ask_raw('CURVE?')
-        res = np.frombuffer(buffer, dtype = np.dtype('int16').newbyteorder('>'),
-                            offset=int(buffer[1])+2)
+        res = np.frombuffer(buffer, dtype=np.dtype('int16').newbyteorder('>'),
+                            offset=int(buffer[1:2])+2)
         # The output of CURVE? is scaled to the display of the scope
         # The following converts the data to the right scale
         Y = (res - self.offset)*self.scale
