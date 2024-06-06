@@ -339,9 +339,10 @@ t0, DeltaT and data_start, data_stop args are mutually exculsive")
             if data_start is not None:
                 self.set_data_start(data_start)
             if data_stop is not None:
-                self.set_data_stop(data_stop) 
+                self.set_data_stop(data_stop)
             self.data_start = self.get_data_start()
             self.data_stop = self.get_data_stop()
+            self.write('dat:reso full')  # avoid reduced mode in MSO/DPO2k
         # Set the channel
         if channel is not None:
             self.set_data_source(channel)
