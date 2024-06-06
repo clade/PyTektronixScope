@@ -7,9 +7,10 @@ This package can be used to record data from a Tektronix scope.
 Installation
 ============
 
-To install PyTektronixScope, download the package and run the command:: 
+To install PyTektronixScope, download the package, navigate to the directory in
+which you downloaded the repository, and run the command:: 
 
-  python setup.py install
+  pip install .
 
 You can also directly move the PyTektronixScope directory to a location
 that Python can import from.
