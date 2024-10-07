@@ -358,7 +358,11 @@ is not selectecd"%(str(channel)))
             self.x_0 = self.get_out_waveform_horizontal_zero()
             self.delta_x = self.get_out_waveform_horizontal_sampling_interval()
 
-        X_axis = self.x_0 + np.arange(self.data_start-1, self.data_stop)*self.delta_x
+        X_axis = (self.x_0 +
+                  np.arange(self.data_start-1,
+                            min((self.data_stop,
+                                 self.get_horizontal_record_length()))) *
+                  self.delta_x)
 
         buffer = self.ask_raw('CURVE?')
         res = np.frombuffer(buffer, dtype=np.dtype('int16').newbyteorder('>'),
